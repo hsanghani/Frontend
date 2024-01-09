@@ -1,0 +1,52 @@
+form {
+    background-color: #565868;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 30%;
+  }
+
+input {
+    background-color:rgb(232, 240, 254) !important;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #15172b;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+  }
+
+  .input-container {
+    height: 50px;
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .input-container > label{
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .ic1 {
+    margin: 20px 0;
+  }
+
+  .subbtn {
+   margin-left: 60px;
+  }
+
+  .subbtn > button{
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid;
+   
+    font-size: 16px;
+    color: white;
+    background-color: #565868;
+}
