@@ -62,49 +62,19 @@ const GeoLocationFinder = () => {
       navigator.geolocation.getCurrentPosition(success, error);
     }
   };
-  // useEffect(() => {
-
-  //   setTimeout(() => {
-  //     if (isLoggin) {
-  //       handleFindMeClick();
-  //       console.log(">>>>>>>>>>>");
-  //     } else {
-  //       console.log("???????????????");
-  //     }
-  //   }, 11000);
-
-  // },[])
-
-  const intervalId = setInterval(() => {
-  if (isLoggin) {
+ 
+  useEffect(() => {
     handleFindMeClick();
-    console.log(">>>>>>>>>>>");
-  } else {
-    console.log("???????????????");
-  }
-}, 180000); // 3 minutes in milliseconds
-
-// Cleanup function to clear the interval when the component unmounts
-useEffect(() => {
-  return () => {
-    clearInterval(intervalId);
-  };
-}, [intervalId]);
-
-  // useEffect(() => {
-  //   // const intervalId = setInterval(() => {
-  //     setTimeout(() => {
-  //     if (isLoggin) {
-  //       handleFindMeClick();
-  //       console.log(">>>>>>>>>>>");
-  //     } else {
-  //       console.log("???????????????");
-  //     }
-  //   }, 10000); // 3 minutes in milliseconds
-
-  //   // Cleanup function to clear the interval when the component unmounts
-  //   // return () => clearInterval(intervalId);
-  // }, [isLoggin]);
+    const intervalId = setInterval(() => {
+      if (isLoggin) {
+        handleFindMeClick();
+        console.log(">>>>>>>>>>>");
+      } else {
+        console.log("???????????????");
+      }
+    }, 1000 * 60 * 3);
+    return () => clearInterval(intervalId);
+  }, [isLoggin]);
 
   return<></>
 };
