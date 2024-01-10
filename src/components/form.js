@@ -11,15 +11,21 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 // import 'firebase/messaging';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC4iRPE1qLXBsPM30n9ejqdXsp5SJ6a0Zg",
-  authDomain: "virtual-stratum-392605.firebaseapp.com",
-  projectId: "virtual-stratum-392605",
-  storageBucket: "virtual-stratum-392605.appspot.com",
-  messagingSenderId: "942979998755",
-  appId: "1:942979998755:web:839dbdda0ee4920a363d96",
+  // apiKey: "AIzaSyC4iRPE1qLXBsPM30n9ejqdXsp5SJ6a0Zg",
+  // authDomain: "virtual-stratum-392605.firebaseapp.com",
+  // projectId: "virtual-stratum-392605",
+  // storageBucket: "virtual-stratum-392605.appspot.com",
+  // messagingSenderId: "942979998755",
+  // appId: "1:942979998755:web:839dbdda0ee4920a363d96",
+  apiKey: "AIzaSyBny3kaMoLsGQu--YdDQ_Wv1-KT-ugWySI",
+  authDomain: "constant-b0150.firebaseapp.com",
+  projectId: "constant-b0150",
+  storageBucket: "constant-b0150.appspot.com",
+  messagingSenderId: "890768948220",
+  appId: "1:890768948220:web:80cd29ed98f724f0aed079"
 };
-const vapidKey =
-  "BIaksp4GN8kCKRSvsMYK3U_8keJn5INIkB-Z1-P8XX5j0H3tJDO-N1DVGsnryaJpKg5Ah7WcwRSp9ijqU4flRDE";
+const vapidKey ="BJgqftuU0f7BCgQfJxq4HyuUrYefx8AJzSefezfhOhB7OoUQAvDymCiHdI8kkPmEwiDCgCcj8UBLdml3sMr8l40"
+  // "BIaksp4GN8kCKRSvsMYK3U_8keJn5INIkB-Z1-P8XX5j0H3tJDO-N1DVGsnryaJpKg5Ah7WcwRSp9ijqU4flRDE";
 
 const app = initializeApp(firebaseConfig);
 // const auth = getAuth(app);
