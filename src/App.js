@@ -1,3 +1,4 @@
+import React from 'react';
 import "./App.css";
 import Form from "./components/form";
 import Latlong from "./components/latlong";

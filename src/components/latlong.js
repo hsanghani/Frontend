@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React , { useEffect, useState } from "react";
 import axios from "axios";
 
 const GeoLocationFinder = () => {
@@ -14,7 +14,7 @@ const GeoLocationFinder = () => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    setStatus("");
+    setStatus("success");
 
     const latLong = {
       lat: latitude,
@@ -29,7 +29,7 @@ const GeoLocationFinder = () => {
     axios
       .put(baseurl + "users/nearByUsers/" + getId, latLong)
       .then((response) => {
-        console.log(response,"success");
+        console.log(response.data.responses,"response");
         setPostdata(response.data);
       })
       .catch((error) => {
