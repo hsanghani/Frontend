@@ -8,8 +8,6 @@ const GeoLocationFinder = () => {
   const isLoggin = localStorage.getItem("isLoggin");
   console.log(isLoggin);
 
-  console.log(status);
-
   const success = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -62,19 +60,20 @@ const GeoLocationFinder = () => {
       navigator.geolocation.getCurrentPosition(success, error);
     }
   };
- 
+  
   useEffect(() => {
-    handleFindMeClick();
+    if (localStorage.getItem("id")) {
+      handleFindMeClick();
+    }
     const intervalId = setInterval(() => {
-      if (isLoggin) {
+      if (localStorage.getItem("id")) {
         handleFindMeClick();
-        console.log(">>>>>>>>>>>");
       } else {
         console.log("???????????????");
       }
-    }, 1000 * 60 * 3);
+    }, 1000 * 60);
     return () => clearInterval(intervalId);
-  }, [isLoggin]);
+  }, [localStorage.getItem("id")]);
 
   return<></>
 };
