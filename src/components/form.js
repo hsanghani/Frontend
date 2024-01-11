@@ -1,62 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./form.css";
-// import { pedirPermissaoParaReceberNotificacoes } from "./push-notification";
-import { initializeApp } from "firebase/app";
-// import { getAuth } from "firebase/auth";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-// import { Toast } from "bootstrap";
-
-// import firebase from 'firebase/app';
-// import 'firebase/messaging';
-
-const firebaseConfig = {
-  // apiKey: "AIzaSyC4iRPE1qLXBsPM30n9ejqdXsp5SJ6a0Zg",
-  // authDomain: "virtual-stratum-392605.firebaseapp.com",
-  // projectId: "virtual-stratum-392605",
-  // storageBucket: "virtual-stratum-392605.appspot.com",
-  // messagingSenderId: "942979998755",
-  // appId: "1:942979998755:web:839dbdda0ee4920a363d96",
-  apiKey: "AIzaSyBny3kaMoLsGQu--YdDQ_Wv1-KT-ugWySI",
-  authDomain: "constant-b0150.firebaseapp.com",
-  projectId: "constant-b0150",
-  storageBucket: "constant-b0150.appspot.com",
-  messagingSenderId: "890768948220",
-  appId: "1:890768948220:web:80cd29ed98f724f0aed079"
-};
-const vapidKey ="BJgqftuU0f7BCgQfJxq4HyuUrYefx8AJzSefezfhOhB7OoUQAvDymCiHdI8kkPmEwiDCgCcj8UBLdml3sMr8l40"
-  // "BIaksp4GN8kCKRSvsMYK3U_8keJn5INIkB-Z1-P8XX5j0H3tJDO-N1DVGsnryaJpKg5Ah7WcwRSp9ijqU4flRDE";
-
-const app = initializeApp(firebaseConfig);
-// const auth = getAuth(app);
-const messaging = getMessaging(app);
-
-// onMessage((payload) => {
-//   console.log(payload, "payload");
-// });
-
-onMessage(messaging, (payload) => {
-  console.log('Message received:', payload);
-
-  // Handle the received message here
-  const { title, body, data } = payload.notification;
-
-  // You can use the data payload to customize the notification content
-  const customData = data || {};
-
-  console.log("title, body, customData ",title, body, customData)
-  // Use the title, body, and customData to display in your notification UI
-  // displayNotification(title, body, customData);
-});
-
-// const displayNotification = (title, body, customData) => {
-//   // Your logic to display the notification using a library like 'react-toastify' or the browser's Notification API
-//   // Example: react-toastify
-//   // Toast(`${title}: ${body} - Custom Data: ${JSON.stringify(customData)}`);
-// };
-
-// firebase.initializeApp(firebaseConfig);
-// const messaging = firebase.messaging();
+import { FCMToken, onMessageListener } from "./messageNotification";
 
 const Form = () => {
   const [data, setData] = useState({
@@ -72,9 +17,9 @@ const Form = () => {
   const [status, setStatus] = useState("");
   const [post, setPost] = useState([]);
 
-  const apiCall = (baseurl, obj,token) => {
+  const apiCall = async (baseurl, obj, token) => {
     axios
-      .post(baseurl + "users", {...obj,token})
+      .post(baseurl + "users", { ...obj, token })
       .then((response) => {
         setPost(response.data);
         setData({
@@ -84,8 +29,8 @@ const Form = () => {
           email: "",
           password: "",
         });
-        console.log("id",response.data._id);
-        console.log("for token",response.data);
+        console.log("id", response.data._id);
+        console.log("for token", response.data);
         localStorage.setItem("id", response.data._id);
         localStorage.setItem("isLoggin", true);
       })
@@ -107,22 +52,11 @@ const Form = () => {
       });
   };
 
-  //   function base64ToArray(encodedString) {
-  //     try {
-  //        const decodedString = atob(encodedString);
-  //        return [...decodedString];
-  //     } catch (error) {
-  //        console.error('Error decoding base64:', error);
-  //        return [];
-  //     }
-  //  }
-
   const success = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     setLatitudeval(latitude);
     setLongitudeval(longitude);
-
     setStatus("");
 
     if (
@@ -148,87 +82,28 @@ const Form = () => {
 
     const baseurl = process.env.REACT_APP_api_url;
 
-    // async function getTokenInternal() {
-    //   try {
-    //     console.log("Getting FCM Token...");
-    //     const token = await getToken(messaging, { vapidKey: vapidKey });
-    //     console.log("FCM Token:", token);
-    //     apiCall(baseurl, obj, token);
-    //   } catch (error) {
-    //     console.error("Error getting FCM token:", error);
-    //   }
-    // }
-
     function requestPermission() {
       console.log("Requesting permission...");
-      Notification.requestPermission().then((permission) => {
+      Notification.requestPermission().then(async (permission) => {
+        console.log("Permission...", permission);
         if (permission === "granted") {
-          console.log("Permission granted",messaging);
-          // const data = pedirPermissaoParaReceberNotificacoes()
-          // console.log("Permission granted",data);
-          // getTokenInternal();
-
-          // auth.onAuthStateChanged((user) => {
-          //   if (user) {
-          //     console.log(user, "usrersdhh");
-              // Call getToken or perform other actions here
-              getToken(messaging, { vapidKey: vapidKey })
-                .then((token) => {
-                  console.log("Permission granted", token);
-                  apiCall(baseurl, obj, token);
-                })
-                .catch((error) => {
-                  console.log("Permission denied", error);
-                });
-          //   }
-          // });
-
-          // getToken(messaging, { vapidKey: vapidKey })
-          //   .then((token) => {
-          //     console.log("FCM Token:", token);
-          //     apiCall(baseurl, obj, token);
-          //   })
-          //   .catch((error) => {
-          //     console.error("Error getting FCM token:", error);
-          //   });
+          const token = await FCMToken();
+          console.log("tok tok tok tok tok tok tok tok tok tok tok", token);
+          if(token){
+            apiCall(baseurl, obj, token);
+          }else{
+            console.log("token is not there")
+          }
         } else {
           console.warn("Permission for notifications denied");
         }
-      });
-
-      // Handle messages when the app is in the foreground
-    const unsubscribe = onMessage(messaging, (payload) => {
-      console.log("Message received:", payload);
-
-      // Handle the received message here
-      const { title, body, data } = payload.notification;
-      console.log("Title, Body, CustomData", title, body, data);
-
-      // You can use the data payload to customize the notification content
-      const customData = data || {};
-      // Handle the notification as needed
-
-      return customData
-    });
-
-    console.log(unsubscribe,"unsub")
+      }).catch((err) => { console.log(err) });
     }
 
-    if ('Notification' in window && 'serviceWorker' in navigator) {
-    //   // navigator.serviceWorker.ready.then((data)=>console.log("Message received. ", data)).catch((err)=>console.log("Message received. ", err))
-    //   // console.log("navigator:", );
-    //   navigator.serviceWorker
-    //     .register("./testi.js")
-    //     .then((registration) => {
-    //       console.log("Service worker registered:", registration);
-    requestPermission();
-    // })
-    // .catch((error) => {
-    //   console.error("Service worker registration failed:", error);
-    // });
+    if ("Notification" in window && "serviceWorker" in navigator) {
+      requestPermission();
     } else {
-      console.warn('This browser does not support Firebase Cloud Messaging.');
-      // Implement a fallback mechanism or inform the user about the lack of support
+      console.warn("This browser does not support Firebase Cloud Messaging.");
     }
   };
 
@@ -250,11 +125,18 @@ const Form = () => {
     e.preventDefault();
     await handleFindMeClick();
   };
-
-  // useEffect(() => {
-  //   localStorage.clear();
-  // }, []);
-
+  useEffect(() => {
+    // await FCMToken();
+    onMessageListener()
+      .then((payload) => {
+        console.log("payload", payload);
+        // setNotification({
+        //   title: payload?.notification?.title+"hello world",
+        //   body: payload?.notification?.body,
+        // });
+      })
+      .catch((err) => console.log("failed: ", err));
+  }, []);
   return (
     <>
       <div
